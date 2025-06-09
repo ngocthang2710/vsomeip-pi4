@@ -1,0 +1,9 @@
+/home/thangnn/aosp/source/vendor/hello_someip/extern/capicxx-core-runtime/build/CMakeFiles/CommonAPI.dir
+/home/thangnn/aosp/source/vendor/hello_someip/extern/capicxx-core-runtime/build/CMakeFiles/maintainer-clean.dir
+/home/thangnn/aosp/source/vendor/hello_someip/extern/capicxx-core-runtime/build/CMakeFiles/dist.dir
+/home/thangnn/aosp/source/vendor/hello_someip/extern/capicxx-core-runtime/build/CMakeFiles/edit_cache.dir
+/home/thangnn/aosp/source/vendor/hello_someip/extern/capicxx-core-runtime/build/CMakeFiles/rebuild_cache.dir
+/home/thangnn/aosp/source/vendor/hello_someip/extern/capicxx-core-runtime/build/CMakeFiles/list_install_components.dir
+/home/thangnn/aosp/source/vendor/hello_someip/extern/capicxx-core-runtime/build/CMakeFiles/install.dir
+/home/thangnn/aosp/source/vendor/hello_someip/extern/capicxx-core-runtime/build/CMakeFiles/install/local.dir
+/home/thangnn/aosp/source/vendor/hello_someip/extern/capicxx-core-runtime/build/CMakeFiles/install/strip.dir

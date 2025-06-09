@@ -1,0 +1,22 @@
+cc_binary {
+    name: "hello_someip_service",
+    srcs: [
+        "service/main_service.cpp",
+        "service/HelloWorldService.cpp",
+    ],
+
+    shared_libs: [
+        "libvsomeip",
+        "libcommonapi",
+        "libcommonapi_someip",
+        "libvsomeip3",
+    ],
+
+    include_dirs: [
+        "vendor/hello_someip/service",
+        "vendor/hello_someip/extern/vsomeip/interface", 
+        "vendor/hello_someip/extern/boost_1_71_0",
+    ],
+
+    cflags: ["-std=c++17"],
+}

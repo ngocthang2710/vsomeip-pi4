@@ -1,0 +1,6 @@
+service vsomeip_service /system/bin/hello_someip_service
+    class main
+    user root
+    group root
+    disabled false
+    seclabel u:r:vendor_init:s0

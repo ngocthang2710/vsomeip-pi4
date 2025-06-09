@@ -1,0 +1,20 @@
+{
+    "unicast": "192.168.1.100",       // IP laptop
+    "multicast": "239.255.0.1",
+    "reliable": false,
+    "ttl": 1,
+    "interfaces": ["eth0"],
+    "application": {
+        "name": "hello_someip_client"
+    },
+    "services": {
+        "12345": {
+            "instance": 1,
+            "methods": {
+                "1": {
+                    "name": "HelloMethod"
+                }
+            }
+        }
+    }
+}

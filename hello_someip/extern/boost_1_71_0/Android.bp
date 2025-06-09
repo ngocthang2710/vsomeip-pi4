@@ -1,0 +1,36 @@
+cc_library_shared {
+    name: "libboost_1_71",
+    //vendor_available: true,
+
+    srcs: [
+        "libs/system/src/error_code.cpp",
+        "libs/thread/src/future.cpp",
+        "libs/thread/src/tss_null.cpp",
+        "libs/thread/src/pthread/once.cpp",
+        "libs/thread/src/pthread/thread.cpp",
+        "libs/filesystem/src/*.cpp"
+    ],
+
+    export_include_dirs: [
+        ".",
+    ],
+
+    rtti: true,
+
+    cflags: [
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-Wno-error=non-virtual-dtor",
+        "-Wno-error=unused-parameter",
+        "-Wno-error=unused-variable",
+    ],
+    cppflags: [
+        "-fexceptions",
+        "-pthread",
+        "-frtti",
+        "-DANDROID",
+        "-D_REENTRANT",
+        "-D_GLIBCXX__PTHREADS"
+    ],
+}

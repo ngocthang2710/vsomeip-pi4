@@ -1,0 +1,20 @@
+{
+    "unicast": "192.168.1.10",        // IP Pi4
+    "multicast": "239.255.0.1",
+    "reliable": false,
+    "ttl": 1,
+    "interfaces": ["eth0"],
+    "application": {
+        "name": "hello_someip_service"
+    },
+    "services": {
+        "12345": {
+            "instance": 1,
+            "methods": {
+                "1": {
+                    "name": "HelloMethod"
+                }
+            }
+        }
+    }
+}
