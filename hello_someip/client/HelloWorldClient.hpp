@@ -7,11 +7,13 @@
 class HelloWorldClient {
 public:
     HelloWorldClient(std::shared_ptr<vsomeip::application> app);
-    void start();
-    void send_request();
+
+    void start();           // Khởi động client, register handler
+    void send_request();    // Gửi request đến server
+    void subscribe_event(); // Subscribe và xử lý notify từ server
 
 private:
     std::shared_ptr<vsomeip::application> app_;
 };
 
-#endif
+#endif // HELLO_WORLD_CLIENT_HPP

@@ -47,6 +47,15 @@ sudo make install
 
 
 
+// Build vsomeip, bat config de load duoc file json
+cmake .. -DENABLE_CONFIGURATION=1
+make -j$(nproc)
+![alt text](image-7.png)
+
+![alt text](image-8.png)
+
+
+
 Bug
 1. Comment LoggerImpl.cpp
 FAILED: ninja: 'vendor/hello_someip/extern/capicxx-core-runtime/src/CommonAPI/LoggerImpl.cpp', needed by 'out/target/product/rpi4/obj/SHARED_LIBRARIES/libcommonapi_dlt_intermediates/sr
@@ -140,3 +149,83 @@ total 84
 -rw-rw-r-- 1 thangnn thangnn   258 Jun  9 23:22 Makefile
 -rwxr-xr-x 1 thangnn thangnn   420 Jun  9 17:52 vsomeip-client.json
 [2025-06-09 23:22:52] thangnn@ASUS:~/aosp/source/vendor/hello_someip/client$ 
+
+
+
+
+ip addr add 192.168.1.10/24 dev eth0; ip link set eth0 up; ip a show eth0
+
+
+rpi4:/ # ip addr add 192.168.1.10/24 dev eth0
+rpi4:/ # ip link set eth0 up
+rpi4:/ # ip a show eth0
+3: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+    link/ether d8:3a:dd:50:c8:57 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.1.10/24 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::7c65:6a61:fe16:4aaf/64 scope link stable-privacy 
+       valid_lft forever preferred_lft forever
+rpi4:/ # 
+
+
+sudo ip addr add 192.168.1.20/24 dev enp4s0; sudo ip link set enp4s0 up; ip a show enp4s0
+
+
+[2025-06-09 23:46:47] thangnn@ASUS:~$ sudo ip addr add 192.168.1.20/24 dev enp4s0
+[sudo] password for thangnn: 
+[2025-06-09 23:46:50] thangnn@ASUS:~$ sudo ip link set enp4s0 up
+[2025-06-09 23:47:02] thangnn@ASUS:~$ ip a show enp4s0
+2: enp4s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether fc:34:97:dd:e6:bc brd ff:ff:ff:ff:ff:ff
+    inet 192.168.1.20/24 scope global enp4s0
+       valid_lft forever preferred_lft forever
+[2025-06-09 23:47:11] thangnn@ASUS:~$ 
+
+![alt text](image-6.png)
+
+
+
+
+adb push ~/vf6/out/target/product/vf_generic/vendor/lib64/libvsomeip_cfg.so /vendor/lib64/
+adb push ~/vf6/out/target/product/vf_generic/vendor/lib64/libvsomeip3.so /vendor/lib64/
+adb push ~/vf6/out/target/product/vf_generic/vendor/lib64/libvsomeip3.so /vendor/lib64/
+adb push ~/vf6/out/target/product/vf_generic/vendor/lib64/libvsomeip_sd.so /vendor/lib64/
+adb push ~/vf6/out/target/product/vf_generic/vendor/lib64/libcommonapi_someip.so /vendor/lib64/
+adb push ~/vf6/out/target/product/vf_generic/vendor/lib64/libcommonapi.so /vendor/lib64/
+adb push ~/vf6/out/target/product/vf_generic/vendor/lib64/libboost_1_71.so /vendor/lib64/
+
+
+
+adb push vsomeip-server.json /vendor/etc/
+
+./target/product/rpi4/symbols/system/bin/hello_someip_service
+adb push hello_someip_service /system/bin
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/vendor/lib64
+export VSOMEIP_CONFIGURATION=/vendor/etc/vsomeip-server.json
+/system/bin/hello_someip_service
+
+
+
+
+./target/product/rpi4/vendor/lib64/libvsomeip_cfg.so
+./target/product/rpi4/vendor/lib64/libvsomeip3.so
+./target/product/rpi4/vendor/lib64/libvsomeip_sd.so
+./target/product/rpi4/vendor/lib64/libcommonapi_someip.so
+./target/product/rpi4/vendor/lib64/libcommonapi.so
+./target/product/rpi4/symbols/system/lib64/libboost_1_71.so
+./target/product/rpi4/vendor/lib64/libboost_1_76.so
+
+
+adb push -> /vendor/lib64
+
+adb push vsomeip-server.json /vendor/etc
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/vendor/lib64
+export VSOMEIP_CONFIGURATION=/vendor/etc/vsomeip-server.json
+/system/bin/hello_someip_service
+
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/vendor/lib64 VSOMEIP_CONFIGURATION=/vendor/etc/vsomeip-server.json /system/bin/hello_someip_service
+
+
+VSOMEIP_CONFIGURATION=./vsomeip-client.json VSOMEIP_APPLICATION_NAME=hello_someip_client ./hello_someip_client

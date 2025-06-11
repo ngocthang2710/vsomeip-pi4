@@ -1,0 +1,63 @@
+...found 1 target...
+...found 10 targets...
+...updating 4 targets...
+clang-linux.compile.c++.without-pch libs/config/checks/architecture/bin/clang-linux-18.0.1/debug/target-os-android/32.o
+In file included from <built-in>:463:
+<command line>:1:9: warning: '__ANDROID_API__' macro redefined [-Wmacro-redefined]
+    1 | #define __ANDROID_API__ 29
+      |         ^
+<built-in>:454:9: note: previous definition is here
+  454 | #define __ANDROID_API__ __ANDROID_MIN_SDK_VERSION__
+      |         ^
+libs/config/checks/architecture/32.cpp:9:10: error: 'test' declared as an array with a negative size
+    9 | int test[sizeof(void*) == 4? 1 : -1];
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+1 warning and 1 error generated.
+
+  "/home/thangnn/Android/Sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android29-clang++" -c -x c++ -fPIC -D__ANDROID_API__=29 -fPIC -O0 -fno-inline -Wall -g -DBOOST_NO_CONCEPT_CHECKS -fPIC   -o "libs/config/checks/architecture/bin/clang-linux-18.0.1/debug/target-os-android/32.o" "libs/config/checks/architecture/32.cpp"
+
+...failed clang-linux.compile.c++.without-pch libs/config/checks/architecture/bin/clang-linux-18.0.1/debug/target-os-android/32.o...
+...failed updating 1 target...
+...updated 3 targets...
+...found 2 targets...
+...updating 1 target...
+clang-linux.compile.c++.without-pch libs/config/checks/architecture/bin/clang-linux-18.0.1/debug/target-os-android/64.o
+In file included from <built-in>:463:
+<command line>:1:9: warning: '__ANDROID_API__' macro redefined [-Wmacro-redefined]
+    1 | #define __ANDROID_API__ 29
+      |         ^
+<built-in>:454:9: note: previous definition is here
+  454 | #define __ANDROID_API__ __ANDROID_MIN_SDK_VERSION__
+      |         ^
+1 warning generated.
+...updated 1 target...
+...found 2 targets...
+...updating 1 target...
+clang-linux.compile.c++.without-pch libs/config/checks/architecture/bin/clang-linux-18.0.1/debug/target-os-android/arm.o
+In file included from <built-in>:463:
+<command line>:1:9: warning: '__ANDROID_API__' macro redefined [-Wmacro-redefined]
+    1 | #define __ANDROID_API__ 29
+      |         ^
+<built-in>:454:9: note: previous definition is here
+  454 | #define __ANDROID_API__ __ANDROID_MIN_SDK_VERSION__
+      |         ^
+1 warning generated.
+...updated 1 target...
+...patience...
+...found 225 targets...
+...updating 7 targets...
+clang-linux.compile.c++.without-pch bin.v2/libs/thread/build/clang-linux-18.0.1/debug/target-os-android/threading-multi/visibility-hidden/has_atomic_flag_lockfree_test.o
+In file included from <built-in>:463:
+<command line>:1:9: warning: '__ANDROID_API__' macro redefined [-Wmacro-redefined]
+    1 | #define __ANDROID_API__ 29
+      |         ^
+<built-in>:454:9: note: previous definition is here
+  454 | #define __ANDROID_API__ __ANDROID_MIN_SDK_VERSION__
+      |         ^
+1 warning generated.
+clang-linux.link bin.v2/libs/thread/build/clang-linux-18.0.1/debug/target-os-android/threading-multi/visibility-hidden/has_atomic_flag_lockfree
+...updated 7 targets...
+...found 1 target...
+...updating 1 target...
+config-cache.write bin.v2/project-cache.jam
+...updated 1 target...

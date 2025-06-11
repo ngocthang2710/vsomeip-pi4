@@ -1,61 +1,67 @@
 #include "HelloWorldService.hpp"
+#include "HelloWorldIDs.hpp"
 
 #include <iostream>
-#include <vsomeip/vsomeip.hpp> 
-
-constexpr vsomeip::service_t SERVICE_ID = 12345;
-constexpr vsomeip::instance_t INSTANCE_ID = 1;
-constexpr vsomeip::method_t METHOD_ID = 1;
 
 HelloWorldService::HelloWorldService(std::shared_ptr<vsomeip::application> app)
-    : app_(app) {}
+    : app_(app) {
+    std::cout << "[Server] HelloWorldService constructor called." << std::endl;
+}
 
 void HelloWorldService::start() {
-    std::cout << "[Service] Initializing application..." << std::endl;
-    if (!app_->init()) {
-        std::cerr << "[Service] Failed to initialize vsomeip application!" << std::endl;
-        return;
-    }
+    std::cout << "[Server] Initializing application..." << std::endl;
+    app_->init();
 
-    std::cout << "[Service] Registering message handler..." << std::endl;
+    std::cout << "[Server] Registering state handler..." << std::endl;
+
+    app_->register_state_handler([this](vsomeip::state_type_e state) {
+        if (state == vsomeip::state_type_e::ST_REGISTERED) {
+            std::cout << "[Server] Application registered. Offering service..." << std::endl;
+            app_->offer_service(SERVICE_ID, INSTANCE_ID);
+
+            std::cout << "[Server] Offering event group..." << std::endl;
+            app_->offer_event(SERVICE_ID,
+                INSTANCE_ID,
+                EVENT_ID,
+                std::set<vsomeip::eventgroup_t>{EVENTGROUP_ID},
+                vsomeip::event_type_e::ET_EVENT);
+
+            // ✅ Gửi notify đầu tiên ngay sau khi offer_event
+            std::string initial_data = "Initial notify from service.";
+            auto initial_payload = vsomeip::runtime::get()->create_payload();
+            initial_payload->set_data(reinterpret_cast<const uint8_t*>(initial_data.data()), initial_data.size());
+
+            std::cout << "[Server] Sending initial notify..." << std::endl;
+            app_->notify(SERVICE_ID, INSTANCE_ID, EVENT_ID, initial_payload);
+        }
+    });
+
+    std::cout << "[Server] Registering request handler..." << std::endl;
     app_->register_message_handler(SERVICE_ID, INSTANCE_ID, METHOD_ID,
         [this](std::shared_ptr<vsomeip::message> request) {
-            std::cout << "[Service] Received request!" << std::endl;
+            std::string request_data((char*)request->get_payload()->get_data(), request->get_payload()->get_length());
+            std::cout << "[Server] Received request from client: " << request_data << std::endl;
 
-            if (!request) {
-                std::cerr << "[Service] Request is null!" << std::endl;
-                return;
-            }
+            std::string response_data = "Server says hello back!";
+            auto response = vsomeip::runtime::get()->create_response(request);
 
-            auto payload = request->get_payload();
-            if (!payload) {
-                std::cerr << "[Service] Payload is null!" << std::endl;
-                return;
-            }
+            auto payload = vsomeip::runtime::get()->create_payload();
+            payload->set_data(reinterpret_cast<const uint8_t*>(response_data.data()), response_data.size());
+            response->set_payload(payload);
 
-            std::string received(reinterpret_cast<const char*>(payload->get_data()), payload->get_length());
-            std::cout << "[Service] Payload Received: \"" << received << "\"" << std::endl;
-
-            std::shared_ptr<vsomeip::message> response = vsomeip::runtime::get()->create_response(request);
-            if (!response) {
-                std::cerr << "[Service] Failed to create response message!" << std::endl;
-                return;
-            }
-
-            std::string reply = "Hello from service!";
-            auto resp_payload = vsomeip::runtime::get()->create_payload();
-            resp_payload->set_data(reinterpret_cast<const vsomeip::byte_t*>(reply.data()), reply.size());
-
-            std::cout << "[Service] Sending response: \"" << reply << "\"" << std::endl;
-            response->set_payload(resp_payload);
-
+            std::cout << "[Server] Sending response to client..." << std::endl;
             app_->send(response);
-            std::cout << "[Service] Response sent." << std::endl;
         });
 
-    std::cout << "[Service] Offering service [" << SERVICE_ID << ":" << INSTANCE_ID << "]..." << std::endl;
-    app_->offer_service(SERVICE_ID, INSTANCE_ID);
-
-    std::cout << "[Service] Starting application loop..." << std::endl;
+    std::cout << "[Server] Starting application..." << std::endl;
     app_->start();
+}
+
+void HelloWorldService::notify() {
+    std::string data = "This is a server notify event.";
+    auto payload = vsomeip::runtime::get()->create_payload();
+    payload->set_data(reinterpret_cast<const uint8_t*>(data.data()), data.size());
+
+    std::cout << "[Server] Sending notify to all subscribers..." << std::endl;
+    app_->notify(SERVICE_ID, INSTANCE_ID, EVENT_ID, payload);
 }

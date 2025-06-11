@@ -1,17 +1,35 @@
 #include "HelloWorldService.hpp"
 #include <vsomeip/vsomeip.hpp>
 #include <iostream>
+#include <memory>
+#include <thread>
+#include <chrono>
 
 int main() {
-    std::cout << "[Service Main] Creating application..." << std::endl;
-    auto app = vsomeip::runtime::get()->create_application("HelloService");
+    std::cout << "[Service Main] Starting HelloWorld Service..." << std::endl;
 
-    std::cout << "[Service Main] Instantiating HelloWorldService..." << std::endl;
+    auto app = vsomeip::runtime::get()->create_application("hello_someip_service");
+    if (!app) {
+        std::cerr << "[Service Main] Failed to create vsomeip application!" << std::endl;
+        return 1;
+    }
+
     HelloWorldService service(app);
 
-    std::cout << "[Service Main] Starting service..." << std::endl;
+    // Thread gửi notify định kỳ
+    std::thread notify_thread([&service]() {
+        while (true) {
+            std::this_thread::sleep_for(std::chrono::seconds(5));
+            service.notify();
+        }
+    });
+
+    std::cout << "[Service Main] Launching service logic..." << std::endl;
     service.start();
 
-    std::cout << "[Service Main] Service exited normally." << std::endl;
+    // Không bao giờ đến đây, nhưng join nếu app_->start() bị dừng
+    notify_thread.join();
+
+    std::cout << "[Service Main] Service stopped gracefully." << std::endl;
     return 0;
 }

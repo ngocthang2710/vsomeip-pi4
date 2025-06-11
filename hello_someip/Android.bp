@@ -7,12 +7,14 @@ cc_binary {
 
     shared_libs: [
         "libvsomeip",
+        "libvsomeip3",
+        "libvsomeip_cfg",
         "libcommonapi",
         "libcommonapi_someip",
-        "libvsomeip3",
     ],
 
     include_dirs: [
+        "vendor/hello_someip/include",
         "vendor/hello_someip/service",
         "vendor/hello_someip/extern/vsomeip/interface", 
         "vendor/hello_someip/extern/boost_1_71_0",

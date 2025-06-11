@@ -1,0 +1,4 @@
+using clang : 18.0.1 : /home/thangnn/Android/Sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android29-clang++ :
+    <cxxflags>-fPIC
+    <cxxflags>-D__ANDROID_API__=29
+    <linkflags>--sysroot=/home/thangnn/Android/Sdk/ndk/27.0.12077973/toolchains/llvm/prebuilt/linux-x86_64/sysroot ;
